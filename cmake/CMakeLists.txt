@@ -44,6 +44,12 @@ if (CMAKE_USE_PTHREADS_INIT)
   add_definitions(-DHAVE_PTHREAD)
 endif (CMAKE_USE_PTHREADS_INIT)
 
+include(CheckLibraryExists)
+check_library_exists(rt sched_yield "${CMAKE_LIBRARY_PATH}" HAVE_LIBRT)
+if (HAVE_LIBRT)
+  set(SYSTEM_LIBRARIES rt)
+endif ()
+
 option(ZLIB_MODULE_PATH "Find zlib in CMAKE_MODULE_PATH" OFF)
 mark_as_advanced(ZLIB_MODULE_PATH)
 if (ZLIB_MODULE_PATH)

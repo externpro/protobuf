@@ -47,6 +47,9 @@
 #include <errno.h>
 #include <iostream>
 #include <ctype.h>
+#ifdef __sun
+#include <limits.h>
+#endif
 
 #include <memory>
 #ifndef _SHARED_PTR_H
