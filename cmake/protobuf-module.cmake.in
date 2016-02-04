@@ -25,7 +25,7 @@ function(PROTOBUF_GENERATE_CPP SRCS HDRS)
 
   # Add well-known type protos include path
   list(APPEND _protobuf_include_path
-    -I "${_PROTOBUF_IMPORT_PREFIX}/@CMAKE_INSTALL_INCLUDEDIR@")
+    -I "${PROTOBUF_INCLUDE_DIR}")
 
   if(DEFINED PROTOBUF_IMPORT_DIRS)
     foreach(DIR ${PROTOBUF_IMPORT_DIRS})
