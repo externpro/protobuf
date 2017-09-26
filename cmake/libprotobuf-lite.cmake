@@ -29,4 +29,4 @@ target_link_libraries(libprotobuf-lite ${CMAKE_THREAD_LIBS_INIT} ${SYSTEM_LIBRAR
 target_include_directories(libprotobuf-lite PUBLIC ${protobuf_source_dir}/src)
 set_target_properties(libprotobuf-lite PROPERTIES
     COMPILE_DEFINITIONS LIBPROTOBUF_EXPORTS
-    OUTPUT_NAME ${LIB_PREFIX}protobuf-lite)
+    OUTPUT_NAME ${LIB_PREFIX}protobuf-lite${ver})

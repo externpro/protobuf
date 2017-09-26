@@ -85,7 +85,7 @@ endforeach()
 # Export configuration
 
 install(EXPORT protobuf-targets
-  DESTINATION "lib/cmake/protobuf"
+  DESTINATION "lib/cmake/protobuf${ver}"
   COMPONENT protobuf-export)
 
 configure_file(protobuf-config.cmake.in
@@ -99,5 +99,5 @@ install(FILES
   "${protobuf_BINARY_DIR}/protobuf-config.cmake"
   "${protobuf_BINARY_DIR}/protobuf-config-version.cmake"
   "${protobuf_BINARY_DIR}/protobuf-module.cmake"
-  DESTINATION "lib/cmake/protobuf"
+  DESTINATION "lib/cmake/protobuf${ver}"
   COMPONENT protobuf-export)
