@@ -82,10 +82,17 @@ foreach(_file ${nobase_dist_proto_DATA})
   endif()
 endforeach()
 
+# Optional NAMESPACE
+if(DEFINED XP_NAMESPACE)
+  set(nsPrefix ${XP_NAMESPACE}::)
+  set(nameSpace NAMESPACE ${nsPrefix})
+endif()
+
 # Export configuration
 
 install(EXPORT protobuf-targets
   DESTINATION "lib/cmake/protobuf${ver}"
+  ${nameSpace}
   COMPONENT protobuf-export)
 
 configure_file(protobuf-config.cmake.in
