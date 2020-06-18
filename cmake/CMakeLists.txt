@@ -127,7 +127,7 @@ endif (MSVC)
 
 if(NOT DEFINED PROTOBUF_VER)
   set(PROTOBUF_VER ${protobuf_VERSION})
-elseif(NOT ${PROTOBUF_VER} STREQUAL ${protobuf_VERSION})
+elseif(NOT PROTOBUF_VER STREQUAL protobuf_VERSION)
   message(AUTHOR_WARNING "version passed in (${PROTOBUF_VER}) doesn't match internal version (${protobuf_VERSION})")
 endif()
 set(ver _${PROTOBUF_VER})
