@@ -29,7 +29,7 @@ foreach(_library ${_protobuf_libraries})
 endforeach()
 
 if (protobuf_BUILD_PROTOC_BINARIES)
-  install(TARGETS protoc EXPORT protobuf-targets
+  install(TARGETS protoc EXPORT protobuf-targets CONFIGURATIONS Release
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT protoc)
   if (UNIX AND NOT APPLE)
     set_property(TARGET protoc
