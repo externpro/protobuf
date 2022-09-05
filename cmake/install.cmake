@@ -40,7 +40,7 @@ if (protobuf_BUILD_PROTOC_BINARIES)
   endif()
 endif (protobuf_BUILD_PROTOC_BINARIES)
 
-#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/protobuf.pc ${CMAKE_CURRENT_BINARY_DIR}/protobuf-lite.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/protobuf.pc ${CMAKE_CURRENT_BINARY_DIR}/protobuf-lite.pc ${XP_OPT_INSTALL} DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 
 file(STRINGS extract_includes.bat.in _extract_strings
   REGEX "^copy")

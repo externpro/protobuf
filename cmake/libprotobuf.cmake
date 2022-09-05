@@ -129,6 +129,6 @@ if(MSVC AND protobuf_BUILD_SHARED_LIBS)
 endif()
 set_target_properties(libprotobuf PROPERTIES
     VERSION ${protobuf_VERSION}
-    OUTPUT_NAME ${LIB_PREFIX}protobuf${ver}
+    OUTPUT_NAME ${LIB_PREFIX}protobuf
     DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 add_library(${nameSpace}libprotobuf ALIAS libprotobuf)

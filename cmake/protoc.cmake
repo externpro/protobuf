@@ -13,5 +13,4 @@ target_link_libraries(protoc libprotoc libprotobuf)
 add_executable(${nameSpace}protoc ALIAS protoc)
 
 set_target_properties(protoc PROPERTIES
-  DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}"
-  OUTPUT_NAME protoc${ver})
+  DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
