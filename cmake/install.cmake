@@ -29,7 +29,7 @@ foreach(_library ${_protobuf_libraries})
 endforeach()
 
 if (protobuf_BUILD_PROTOC_BINARIES)
-  install(TARGETS protoc EXPORT protobuf-targets
+  install(TARGETS protoc EXPORT protobuf-targets CONFIGURATIONS Release
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT protoc
     BUNDLE DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT protoc)
   if (UNIX AND NOT APPLE)
@@ -41,7 +41,7 @@ if (protobuf_BUILD_PROTOC_BINARIES)
   endif()
 endif (protobuf_BUILD_PROTOC_BINARIES)
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/protobuf.pc ${CMAKE_CURRENT_BINARY_DIR}/protobuf-lite.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/protobuf.pc ${CMAKE_CURRENT_BINARY_DIR}/protobuf-lite.pc ${XP_OPT_INSTALL} DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 
 file(STRINGS ${protobuf_SOURCE_DIR}/cmake/extract_includes.bat.in _extract_strings
   REGEX "^copy")
@@ -127,19 +127,19 @@ configure_file(${protobuf_SOURCE_DIR}/cmake/protobuf-options.cmake
 
 if (protobuf_BUILD_PROTOC_BINARIES)
   export(TARGETS libprotobuf-lite libprotobuf libprotoc protoc
-    NAMESPACE protobuf::
+    NAMESPACE ${nameSpace}
     FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
   )
 else (protobuf_BUILD_PROTOC_BINARIES)
   export(TARGETS libprotobuf-lite libprotobuf
-    NAMESPACE protobuf::
+    NAMESPACE ${nameSpace}
     FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
   )
 endif (protobuf_BUILD_PROTOC_BINARIES)
 
 install(EXPORT protobuf-targets
   DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
-  NAMESPACE protobuf::
+  NAMESPACE ${nameSpace}
   COMPONENT protobuf-export)
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/
