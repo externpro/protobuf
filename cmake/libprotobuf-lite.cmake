@@ -81,5 +81,5 @@ endif()
 set_target_properties(libprotobuf-lite PROPERTIES
     VERSION ${protobuf_VERSION}
     OUTPUT_NAME ${LIB_PREFIX}protobuf-lite
-    DEBUG_POSTFIX "${protobuf_DEBUG_POSTFIX}")
-add_library(protobuf::libprotobuf-lite ALIAS libprotobuf-lite)
+    DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
+add_library(${nameSpace}libprotobuf-lite ALIAS libprotobuf-lite)
