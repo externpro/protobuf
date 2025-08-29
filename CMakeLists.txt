@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.1.3...3.21)
+cmake_minimum_required(VERSION 3.1.3...3.31)
 project(protobuf_root)
-include(flags OPTIONAL)
+include(xpflags)
 if(DEFINED XP_NAMESPACE)
   set(XP_OPT_INSTALL EXCLUDE_FROM_ALL)
   set(nsPrefix ${XP_NAMESPACE}::)
