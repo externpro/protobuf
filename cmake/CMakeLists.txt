@@ -100,6 +100,7 @@ message(STATUS "protobuf_VERSION_PRERELEASE: ${protobuf_VERSION_PRERELEASE}")
 set(protobuf_VERSION
   "${protobuf_VERSION_MAJOR}.${protobuf_VERSION_MINOR}.${protobuf_VERSION_PATCH}")
 
+set(protobuf_BASE_TAG v${protobuf_VERSION})
 if(protobuf_VERSION_PRERELEASE)
   set(protobuf_VERSION "${protobuf_VERSION}.${protobuf_VERSION_PRERELEASE}")
 else()
@@ -113,6 +114,38 @@ if(protobuf_VERBOSE)
   message(STATUS "  Version     : ${protobuf_VERSION} (${protobuf_VERSION_STRING})")
   message(STATUS "  Contact     : ${protobuf_CONTACT}")
   message(STATUS "]")
+endif()
+
+if(DEFINED XP_NAMESPACE)
+  set(CMAKE_NAMESPACE ${XP_NAMESPACE})
+  string(JOIN "\n" EXT1
+    "set(FPHSA_NAME_MISMATCHED TRUE) # FIND_PACKAGE_HANDLE_STANDARD_ARGS NAME_MISMATCHED"
+    "set(protobuf_MODULE_COMPATIBLE ON) # necessary for GENERATE_PROTOBUF_CPP"
+    ""
+    )
+  string(JOIN "\n" EXT3
+    "set(PROTOBUF_PROTOC_EXECUTABLE ${CMAKE_NAMESPACE}::protoc) # TRICKY: match name in -module.cmake"
+    "get_target_property(PROTOBUF_INCLUDE_DIR ${CMAKE_NAMESPACE}::libprotobuf INTERFACE_INCLUDE_DIRECTORIES)"
+    "list(APPEND reqVars PROTOBUF_INCLUDE_DIR PROTOBUF_PROTOC_EXECUTABLE)"
+    ""
+    )
+  xpExternPackage(REPO_NAME protobuf NAMESPACE ${XP_NAMESPACE} ALIAS_NAMESPACE protobuf
+    TARGETS_FILE protobuf-config EXE protoc LIBRARIES libprotobuf
+    BASE ${protobuf_BASE_TAG} XPDIFF "patch" DEPS zlib
+    WEB "https://developers.google.com/protocol-buffers/" UPSTREAM "github.com/protocolbuffers/protobuf"
+    DESC "language-neutral, platform-neutral extensible mechanism for serializing structured data"
+    LICENSE "[BSD-3-Clause](https://github.com/protocolbuffers/protobuf/blob/v3.14.0/LICENSE 'BSD 3-Clause New or Revised License')"
+    )
+  set(CMAKE_OPT_INSTALL FALSE)
+  set(CMAKE_INSTALL_CMAKEDIR ${XP_INSTALL_CMAKEDIR})
+else()
+  set(CMAKE_NAMESPACE protobuf)
+  set(CMAKE_OPT_INSTALL TRUE)
+  if(NOT MSVC)
+    set(CMAKE_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/protobuf")
+  else()
+    set(CMAKE_INSTALL_CMAKEDIR "cmake")
+  endif()
 endif()
 
 add_definitions(-DGOOGLE_PROTOBUF_CMAKE_BUILD)
@@ -129,20 +162,16 @@ if (protobuf_WITH_ZLIB)
     set(HAVE_ZLIB 1)
     if(COMMAND xpFindPkg) # externpro dependency provider
       set(ZLIB_INCLUDE_DIRECTORIES) # NOTE: bundled with library (INTERFACE_INCLUDE_DIRECTORIES)
-      if(TARGET xpro::zlibstatic)
-        set(ZLIB_LIBRARIES xpro::zlibstatic)
-        set(_protobuf_FIND_ZLIB "if(NOT ZLIB_FOUND)\n  find_package(ZLIB)\nendif()")
-      endif()
     else()
     # FindZLIB module define ZLIB_INCLUDE_DIRS variable
     # Set ZLIB_INCLUDE_DIRECTORIES for compatible
     set(ZLIB_INCLUDE_DIRECTORIES ${ZLIB_INCLUDE_DIRECTORIES} ${ZLIB_INCLUDE_DIRS})
+    endif()
     # Using imported target if exists
     if (TARGET ZLIB::ZLIB)
       set(ZLIB_LIBRARIES ZLIB::ZLIB)
       set(_protobuf_FIND_ZLIB "if(NOT ZLIB_FOUND)\n  find_package(ZLIB)\nendif()")
     endif (TARGET ZLIB::ZLIB)
-    endif()
   else (ZLIB_FOUND)
     set(HAVE_ZLIB 0)
     # Explicitly set these to empty (override NOT_FOUND) so cmake doesn't

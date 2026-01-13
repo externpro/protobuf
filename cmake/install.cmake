@@ -23,14 +23,14 @@ foreach(_library ${_protobuf_libraries})
       PROPERTY INSTALL_RPATH "@loader_path")
   endif()
   install(TARGETS ${_library} EXPORT protobuf-targets
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ${_library}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${_library}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${_library})
 endforeach()
 
 if (protobuf_BUILD_PROTOC_BINARIES)
   install(TARGETS protoc EXPORT protobuf-targets CONFIGURATIONS Release
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT protoc)
   if (UNIX AND NOT APPLE)
     set_property(TARGET protoc
       PROPERTY INSTALL_RPATH "$ORIGIN/../${CMAKE_INSTALL_LIBDIR}")
@@ -40,7 +40,7 @@ if (protobuf_BUILD_PROTOC_BINARIES)
   endif()
 endif (protobuf_BUILD_PROTOC_BINARIES)
 
-if(XP_OPT_INSTALL)
+if(CMAKE_OPT_INSTALL)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/protobuf.pc ${CMAKE_CURRENT_BINARY_DIR}/protobuf-lite.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 endif()
 
@@ -56,6 +56,7 @@ foreach(_extract_string ${_extract_strings})
   if(EXISTS "${_extract_from}")
     install(FILES "${_extract_from}"
       DESTINATION "${_extract_to}"
+      COMPONENT protobuf-headers
       RENAME "${_extract_name}")
   else()
     message(AUTHOR_WARNING "The file \"${_extract_from}\" is listed in "
@@ -92,6 +93,7 @@ foreach(_file ${nobase_dist_proto_DATA})
   if(EXISTS "${_file_from}")
     install(FILES "${_file_from}"
       DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_file_path}"
+      COMPONENT protobuf-protos
       RENAME "${_file_name}")
   else()
     message(AUTHOR_WARNING "The file \"${_file_from}\" is listed in "
@@ -122,26 +124,29 @@ configure_file(protobuf-options.cmake
 
 if (protobuf_BUILD_PROTOC_BINARIES)
   export(TARGETS libprotobuf-lite libprotobuf libprotoc protoc
-    NAMESPACE ${nameSpace}
+    NAMESPACE ${CMAKE_NAMESPACE}::
     FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
   )
 else (protobuf_BUILD_PROTOC_BINARIES)
   export(TARGETS libprotobuf-lite libprotobuf
-    NAMESPACE ${nameSpace}
+    NAMESPACE ${CMAKE_NAMESPACE}::
     FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
   )
 endif (protobuf_BUILD_PROTOC_BINARIES)
 
 install(EXPORT protobuf-targets
   DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
-  NAMESPACE ${nameSpace})
+  NAMESPACE ${CMAKE_NAMESPACE}::
+  COMPONENT protobuf-export)
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/
   DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
+  COMPONENT protobuf-export
   PATTERN protobuf-targets.cmake EXCLUDE
 )
 
 option(protobuf_INSTALL_EXAMPLES "Install the examples folder" OFF)
 if(protobuf_INSTALL_EXAMPLES)
-  install(DIRECTORY ../examples/ DESTINATION examples)
+  install(DIRECTORY ../examples/ DESTINATION examples
+    COMPONENT protobuf-examples)
 endif()

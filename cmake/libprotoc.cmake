@@ -178,5 +178,4 @@ set_target_properties(libprotoc PROPERTIES
     VERSION ${protobuf_VERSION}
     OUTPUT_NAME ${LIB_PREFIX}protoc
     DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
-add_library(${nameSpace}libprotoc ALIAS libprotoc)
-
+add_library(${CMAKE_NAMESPACE}::libprotoc ALIAS libprotoc)
