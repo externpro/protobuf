@@ -134,4 +134,4 @@ set_target_properties(libprotobuf PROPERTIES
     VERSION ${protobuf_VERSION}
     OUTPUT_NAME ${LIB_PREFIX}protobuf
     DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
-add_library(${nameSpace}libprotobuf ALIAS libprotobuf)
+add_library(${CMAKE_NAMESPACE}::libprotobuf ALIAS libprotobuf)

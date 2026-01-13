@@ -10,7 +10,7 @@ endif()
 
 add_executable(protoc ${protoc_files} ${protoc_rc_files})
 target_link_libraries(protoc libprotoc libprotobuf)
-add_executable(${nameSpace}protoc ALIAS protoc)
+add_executable(${CMAKE_NAMESPACE}::protoc ALIAS protoc)
 
 set_target_properties(protoc PROPERTIES
-  DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
+    DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
