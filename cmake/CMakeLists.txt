@@ -137,7 +137,6 @@ if(DEFINED XP_NAMESPACE)
     LICENSE "[BSD-3-Clause](https://github.com/protocolbuffers/protobuf/blob/v3.14.0/LICENSE 'BSD 3-Clause New or Revised License')"
     )
   set(CMAKE_OPT_INSTALL FALSE)
-  set(CMAKE_INSTALL_CMAKEDIR ${XP_INSTALL_CMAKEDIR})
 else()
   set(CMAKE_NAMESPACE protobuf)
   set(CMAKE_OPT_INSTALL TRUE)
