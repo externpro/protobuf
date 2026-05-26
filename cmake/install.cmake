@@ -116,7 +116,7 @@ endif()
 mark_as_advanced(CMAKE_INSTALL_CMAKEDIR)
 
 configure_file(protobuf-config.cmake.in
-  ${CMAKE_INSTALL_CMAKEDIR}/protobuf-config.cmake @ONLY)
+  ${CMAKE_INSTALL_CMAKEDIR}/protobuf-config-orig.cmake @ONLY)
 configure_file(protobuf-config-version.cmake.in
   ${CMAKE_INSTALL_CMAKEDIR}/protobuf-config-version.cmake @ONLY)
 configure_file(protobuf-module.cmake.in
@@ -128,19 +128,19 @@ configure_file(protobuf-options.cmake
 
 if (protobuf_BUILD_PROTOC_BINARIES)
   export(TARGETS libprotobuf-lite libprotobuf libprotoc protoc
-    NAMESPACE ${CMAKE_NAMESPACE}::
+    NAMESPACE protobuf::
     FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
   )
 else (protobuf_BUILD_PROTOC_BINARIES)
   export(TARGETS libprotobuf-lite libprotobuf
-    NAMESPACE ${CMAKE_NAMESPACE}::
+    NAMESPACE protobuf::
     FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
   )
 endif (protobuf_BUILD_PROTOC_BINARIES)
 
 install(EXPORT protobuf-targets
   DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
-  NAMESPACE ${CMAKE_NAMESPACE}::
+  NAMESPACE protobuf::
   COMPONENT protobuf-export)
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/
