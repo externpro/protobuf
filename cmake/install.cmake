@@ -116,7 +116,7 @@ endif()
 mark_as_advanced(CMAKE_INSTALL_CMAKEDIR)
 
 configure_file(protobuf-config.cmake.in
-  ${CMAKE_INSTALL_CMAKEDIR}/protobuf-config.cmake @ONLY)
+  ${CMAKE_INSTALL_CMAKEDIR}/protobuf-config-orig.cmake @ONLY)
 configure_file(protobuf-config-version.cmake.in
   ${CMAKE_INSTALL_CMAKEDIR}/protobuf-config-version.cmake @ONLY)
 configure_file(protobuf-module.cmake.in

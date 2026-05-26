@@ -1,5 +1,5 @@
 # Minimum CMake required
-cmake_minimum_required(VERSION 3.1.3...3.31)
+cmake_minimum_required(VERSION 3.1.3...4.3)
 
 if(protobuf_VERBOSE)
   message(STATUS "Protocol Buffers Configuring...")
@@ -119,32 +119,6 @@ if(protobuf_VERBOSE)
   message(STATUS "  Version     : ${protobuf_VERSION} (${protobuf_VERSION_STRING})")
   message(STATUS "  Contact     : ${protobuf_CONTACT}")
   message(STATUS "]")
-endif()
-
-if(DEFINED XP_NAMESPACE)
-  set(CMAKE_NAMESPACE ${XP_NAMESPACE})
-  string(JOIN "\n" EXT1
-    "set(FPHSA_NAME_MISMATCHED TRUE) # FIND_PACKAGE_HANDLE_STANDARD_ARGS NAME_MISMATCHED"
-    "set(protobuf_MODULE_COMPATIBLE ON) # necessary for GENERATE_PROTOBUF_CPP"
-    ""
-    )
-  string(JOIN "\n" EXT3
-    "set(PROTOBUF_PROTOC_EXECUTABLE ${CMAKE_NAMESPACE}::protoc) # TRICKY: match name in -module.cmake"
-    "get_target_property(PROTOBUF_INCLUDE_DIR ${CMAKE_NAMESPACE}::libprotobuf INTERFACE_INCLUDE_DIRECTORIES)"
-    "list(APPEND reqVars PROTOBUF_INCLUDE_DIR PROTOBUF_PROTOC_EXECUTABLE)"
-    ""
-    )
-  xpExternPackage(REPO_NAME protobuf NAMESPACE ${XP_NAMESPACE} ALIAS_NAMESPACE protobuf
-    TARGETS_FILE protobuf-config EXE protoc LIBRARIES libprotobuf
-    BASE ${protobuf_BASE_TAG} XPDIFF "patch" DEPS zlib
-    WEB "https://developers.google.com/protocol-buffers/" UPSTREAM "github.com/protocolbuffers/protobuf"
-    DESC "language-neutral, platform-neutral extensible mechanism for serializing structured data"
-    LICENSE "[BSD-3-Clause](https://github.com/protocolbuffers/protobuf/blob/v3.14.0/LICENSE 'BSD 3-Clause New or Revised License')"
-    )
-  set(CMAKE_OPT_INSTALL FALSE)
-else()
-  set(CMAKE_NAMESPACE protobuf)
-  set(CMAKE_OPT_INSTALL TRUE)
 endif()
 
 add_definitions(-DGOOGLE_PROTOBUF_CMAKE_BUILD)
@@ -316,6 +290,30 @@ endif (protobuf_BUILD_TESTS)
 if (protobuf_BUILD_CONFORMANCE)
   include(conformance.cmake)
 endif (protobuf_BUILD_CONFORMANCE)
+
+if(COMMAND xpExternPackage)
+  string(JOIN "\n" EXT1
+    "set(FPHSA_NAME_MISMATCHED TRUE) # FIND_PACKAGE_HANDLE_STANDARD_ARGS NAME_MISMATCHED"
+    "set(protobuf_MODULE_COMPATIBLE ON) # necessary for GENERATE_PROTOBUF_CPP"
+    ""
+    )
+  string(JOIN "\n" EXT3
+    "set(PROTOBUF_PROTOC_EXECUTABLE ${PROJECT_NAME}::protoc) # TRICKY: match name in -module.cmake"
+    "get_target_property(PROTOBUF_INCLUDE_DIR ${PROJECT_NAME}::libprotobuf INTERFACE_INCLUDE_DIRECTORIES)"
+    "list(APPEND reqVars PROTOBUF_INCLUDE_DIR PROTOBUF_PROTOC_EXECUTABLE)"
+    ""
+    )
+  xpExternPackage(REPO_NAME protobuf TARGETS_FILE protobuf-config-orig EXPORT protobuf-targets
+    EXE protoc LIBRARIES libprotobuf FIND_XPRO_CMAKE
+    BASE ${protobuf_BASE_TAG} XPDIFF "patch"
+    WEB "https://developers.google.com/protocol-buffers/" UPSTREAM "github.com/protocolbuffers/protobuf"
+    DESC "language-neutral, platform-neutral extensible mechanism for serializing structured data"
+    LICENSE "[BSD-3-Clause](https://github.com/protocolbuffers/protobuf/blob/v3.14.0/LICENSE 'BSD 3-Clause New or Revised License')"
+    )
+  set(CMAKE_OPT_INSTALL FALSE)
+else()
+  set(CMAKE_OPT_INSTALL TRUE)
+endif()
 
 include(install.cmake)
 
