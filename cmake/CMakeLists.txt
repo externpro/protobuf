@@ -303,8 +303,9 @@ if(COMMAND xpExternPackage)
     "list(APPEND reqVars PROTOBUF_INCLUDE_DIR PROTOBUF_PROTOC_EXECUTABLE)"
     ""
     )
-  xpExternPackage(REPO_NAME protobuf TARGETS_FILE protobuf-config-orig EXPORT protobuf-targets
-    EXE protoc LIBRARIES libprotobuf FIND_XPRO_CMAKE
+  xpExternPackage(REPO_NAME protobuf
+    TARGETS_FILE protobuf-config-orig EXPORT protobuf-targets
+    EXE protoc LIBRARIES libprotobuf
     BASE ${protobuf_BASE_TAG} XPDIFF "patch"
     WEB "https://developers.google.com/protocol-buffers/" UPSTREAM "github.com/protocolbuffers/protobuf"
     DESC "language-neutral, platform-neutral extensible mechanism for serializing structured data"
